@@ -13,55 +13,56 @@ This Readme file will guide you to deploy a contract in IoT blockchain and contr
 
 Create the Project folder using the commands.
 
-```
-$cd Desktop 
-$mkdir Blink && cd Blink
+``` bash
+$ cd Desktop
+$ mkdir Blink && cd Blink
 ```
 
 Initialize the node Project using the command.
 
-```
+``` bash
 $npm init
 ```
 
-Enter the project details in the terminal and save the package.json file 
+Enter the project details in the terminal and save the package.json file
 
 In that project folder, install web3 and onoff modules using the commands.
-
+``` bash
+$ npm install web3 --save
+$ npm install onoff --save
+$ npm install fs --save
+$ npm install solc --save
 ```
-$npm install web3 --save
-$npm install onoff --save
-```
 
-Wire up the LED and make sure your LED can blink by the nodejs program 
+Wire up the LED and make sure your LED can blink by the nodejs program
 
 - Connect the positive end of LED(5v) to pin 11 and the negative end to pin 9(GND).
 - Open a new terminal in your RPI-3.
 - Create a project folder
-    
-```
-$mkdir blink
-$cd blink
-$npm init 
-$npm install onoff --save
+
+``` bash
+$ mkdir blink
+$ cd blink
+$ npm init
+$ npm install onoff --save
 ```
 
 - Now we will create a new file named blink.js inside the project folder.
 
-```
-$nano blink.js
-    
-``` 
-- copy the below code to the blink.js file and save it.
+``` bash
+$ nano blink.js
 
 ```
+- copy the below code to the blink.js file and save it.
+
+``` javascript
     var Gpio = require('onoff').Gpio,
     led = new Gpio(17, 'out');
- 
+
     var iv = setInterval(function(){
         led.writeSync(led.readSync() === 0 ? 1 : 0)
     }, 500);
- 
+
     // Stop blinking the LED and turn it off after 5 seconds.
     setTimeout(function() {
         clearInterval(iv); // Stop blinking
@@ -70,40 +71,40 @@ $nano blink.js
     }, 5000);
 
 ```
-The above code will make to blink the LED for 5s 
+The above code will make to blink the LED for 5s
 
 - Run the code using the command.
 
-```
-$sudo node blink.js
-    
+``` bash
+$ sudo node blink.js
+
 ```
 
-Let's use the blockchain now. 
+Let's use the blockchain now.
 
 - In terminal start the geth console and connect it to the Private Blockchain.
 
-```
-$cd /home/pi/Desktop/Blockchain
-$geth --datadir "aws" --networkid 5432 --port 30303 --rpc --rpcport 8545 --rpccorsdomain "*" --nodiscover console
+``` bash
+$ cd /home/pi/Desktop/Blockchain
+$ geth --datadir "aws" --networkid 5432 --port 30303 --rpc --rpcport 8545 --rpccorsdomain "*" --nodiscover console
 admin.addPeer("enode://f194a9aa126c640a141202a083b3edcd65785ca8ec6fa7c5d77065ef918c6a01d49512147826c11d2c60f6c1551eb5a120c33a16fb0c31f0879d582a4c247c7b@54.214.225.10:30303")
 admin.peers
 ```
 - Unlock the personal account for deploying the contract.
 
-```
+``` javascript
 personal.unlockAccount(eth.accounts[0])
 ```
 
-- Deploy the contract Blink.sol using the online [solidity compiler] (https://ethereum.github.io/browser-solidity/#version=soljson-v0.4.12+commit.194ff033.js)
+- Deploy the contract Blink.sol using the online [solidity compiler](https://ethereum.github.io/browser-solidity/#version=soljson-v0.4.12+commit.194ff033.js)
 - Once the contract was deployed note down the contract address.
 - In the blink.js file replace the contract address with your contract address.
-- Open the new terminal and run the blink.js file 
+- Open the new terminal and run the blink.js file
 
-```
-$sudo node blink.js
+``` bash
+$ sudo node blink.js
 
 ```
 - In online compiler enter the value for Blink and submit the transaction. Once the transaction was deployed you can find the success message in the terminal followed by LED blinking for a particular time.
-    
+
 - Voila!!!
